@@ -15,12 +15,13 @@ class myThread(threading.Thread):
 		self.name = name
 		self.method = method
 	def run(self):
-		print "Starting: " + self.name
-		if self.method == "mqtt":
-			mqtt.run()
-		else:
-			kpreader.run()
-		print "Exiting: " + self.name
+		while exitFlag == 0:
+			print "Starting: " + self.name
+			if self.method == "mqtt":
+				mqtt.run()
+			else:
+				kpreader.run()
+			print "Exiting: " + self.name
 
 if __name__=="__main__":
 	mqttThread = myThread(1, "mqttThread", "mqtt")
@@ -33,16 +34,17 @@ if __name__=="__main__":
 	mqttThread.start()
 	readerThread.start()
 
-try:
-	while True:
-		sleep(1)
-except KeyboardInterrupt:
-	pass
-finally:
-	mqtt.quit()
-	kpreader.quit()	
+	try:
+		while True:
+			sleep(1)
+	except KeyboardInterrupt:
+		pass
+	finally:
+		mqtt.quit()
+		kpreader.quit()
 
 print "exiting main thread"
+exitFlag = 1
 sys.exit()
 	
 

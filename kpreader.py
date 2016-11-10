@@ -74,7 +74,9 @@ def parseKeypad(data):
 
 def run():
 	global data
-	while True:
+	global read
+	read = True
+	while read:
 		data = []
 		GPIO.remove_event_detect(clock_pin)
 		GPIO.wait_for_edge(clock_pin, GPIO.RISING)
@@ -92,7 +94,9 @@ def run():
 			print ("{0} Accessed door @ {1}".format(name,time))
 	
 def quit():
+	read = False
 	GPIO.cleanup()	
+
 	
 
 	

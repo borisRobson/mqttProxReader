@@ -7,8 +7,27 @@ def init():
 #	global dbconfig
 #	dbconfig = read_db_config()
 
-#def insert(user, token):
+def insert(user, token):
+	query = "INSERT INTO Users(Name, TokenID)"\
+		"VALUES(%s, %s)"
+	args = (user, str(token))
+#	print args
+	try:
+		db_config = read_db_config()
+		conn = MySQLConnection(**db_config)
 
+		cursor = conn.cursor()
+		cursor.execute(query, args)
+
+		conn.commit()
+
+	except Error as e:
+		print(e)
+
+	finally:
+		print ("Added User: {0}, TokenId: {1}").format(user, token)
+		cursor.close()
+		conn.close()
 
 def getUser(token):
 	user = {}
