@@ -3,6 +3,7 @@ from time import sleep
 import numpy as np
 import json
 from datetime import datetime
+from dbhandler import getUser
 
 def data_callback(channel):
 	if GPIO.input(data_pin):
@@ -80,7 +81,15 @@ def run():
 		GPIO.add_event_detect(clock_pin, GPIO.RISING, callback=data_callback)
 		sleep(0.75)	
 		token = parseKeypad(data)
-		print token
+#		print token
+		user = 	getUser(token)
+#		print(user)
+		if len(user) == 0:
+			print("user not recognised")
+		else:
+			name = user[0]
+			time = datetime.now().time()
+			print ("{0} Accessed door @ {1}".format(name,time))
 	
 def quit():
 	GPIO.cleanup()	

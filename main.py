@@ -1,6 +1,7 @@
 import sys
 import kpreader as kpreader
 import mqttHandler as mqtt
+import dbhandler
 import threading
 import time
 from time import sleep
@@ -27,6 +28,7 @@ if __name__=="__main__":
 
 	mqtt.init()
 	kpreader.init()
+	dbhandler.init()
 
 	mqttThread.start()
 	readerThread.start()
