@@ -3,9 +3,12 @@ from configparse import read_mqtt_config
 import json
 from datetime import datetime
 import uuid
-from dbhandler import insert
+from dbhandler import *
 
 def on_connect(client, userdata, flags, rc):
+	#subsrcibe inside connect callback
+	#if connection is lost, this will call on reconnect
+	#and automatically re-subscribe
 	print "Connected to mqtt broker: " + str(rc)
 	mqttc.subscribe(MQTT_TOPICS)
 	
@@ -17,12 +20,23 @@ def on_subscribe(mosq, obj, mid, granted_qos):
 	print("subscribed to topics: "+ str(MQTT_TOPICS))
 
 def on_message(mosqq, obj, msg):
-	print msg.payload
+	#convert payload to json
 	data = msg.payload
 	jsondata = json.loads(data)
+	#get name & token
 	name = jsondata["Name"]
 	token = jsondata["TokenId"]
-	insert(name, token)
+	topic = msg.topic
+	#parse topic and perform correct action
+	if topic.find("Added") != -1:
+		insert(name, token)
+	elif topic.find("Removed") != -1:
+		remove(name)
+		print("Removed user: {0}").format(name)
+
+def publish_event(topic,msg):
+	mqttc.publish(topic, msg, 1)
+	
 
 def init():
 	print ("init mqtt")

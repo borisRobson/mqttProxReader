@@ -8,28 +8,40 @@ from time import sleep
 
 exitFlag = 0
 
-class myThread(threading.Thread):
-	def __init__(self,threadID, name, method):
+class msgThread(threading.Thread):
+	def __init__(self,threadID, name):
 		threading.Thread.__init__(self)
 		self.threadID = threadID
-		self.name = name
-		self.method = method
+		self.name = name	
 	def run(self):
 		while exitFlag == 0:
 			print "Starting: " + self.name
-			if self.method == "mqtt":
-				mqtt.run()
-			else:
-				kpreader.run()
-			print "Exiting: " + self.name
+			mqtt.run()
+			print "Exiting: " + self.name + " " + str(exitFlag)
+
+class ioThread(threading.Thread):
+	def __init__(self, threadId, name):
+		threading.Thread.__init__(self)
+		self.threadID = threadId
+		self.name = name
+	def run(self):
+		while exitFlag == 0:
+			print "Starting: " +self.name
+			kpreader.run()
+			print "Exiting " + self.name
+		
+			
 
 if __name__=="__main__":
-	mqttThread = myThread(1, "mqttThread", "mqtt")
-	readerThread = myThread(2, "readerThread", "reader")
+	mqttThread = msgThread(1, "mqttThread")
+	readerThread = ioThread(2, "readerThread")
 
 	mqtt.init()
 	kpreader.init()
 	dbhandler.init()
+
+	mqttThread.daemon = True
+	readerThread.daemon = True
 
 	mqttThread.start()
 	readerThread.start()
@@ -40,11 +52,13 @@ if __name__=="__main__":
 	except KeyboardInterrupt:
 		pass
 	finally:
+		exitFlag = 1
 		mqtt.quit()
-		kpreader.quit()
+		kpreader.quit()	
 
 print "exiting main thread"
-exitFlag = 1
+#kpreader.quit()
+#ymqtt.quit()
 sys.exit()
 	
 

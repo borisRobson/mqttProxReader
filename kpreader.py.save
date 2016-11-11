@@ -4,11 +4,7 @@ import numpy as np
 import json
 from datetime import datetime
 from dbhandler import getUser
-from mqttHandler import publish_event
 
-
-#read value on rising clock pulse
-#fill data array
 def data_callback(channel):
 	if GPIO.input(data_pin):
 		data.append(0)
@@ -18,26 +14,21 @@ def data_callback(channel):
 def init():
 	print ("init reader")
 	global data_pin, clock_pin,rled_pin,gled_pin
-	global DOOR_NUM
-	DOOR_NUM = 1
-	GPIO.setwarnings(False)
-
-	#configure pinout and board-mode
+#	data = []
+	#configure pinout and board
 	data_pin = 14
 	clock_pin = 2
 	rled_pin = 15
 	gled_pin = 3
-
 	GPIO.setmode(GPIO.BCM)
 	GPIO.setup(data_pin, GPIO.IN)
 	GPIO.setup(clock_pin, GPIO.IN)	
-
-	#set initial output state to low
 	outputs = (rled_pin, gled_pin)
+#	GPIO.output(outputs, GPIO.HIGH)
 	GPIO.setup(rled_pin, GPIO.OUT)
 	GPIO.setup(gled_pin, GPIO.OUT)
-	GPIO.output(outputs, GPIO.LOW)
-
+	GPIO.output(outputs, GPIO.HIGH)
+#	GPIO.add_event_detect(clock_pin, GPIO.RISING, callback=data_callback)
 
 def parseKeypad(data):
 	print("parsing...")
@@ -88,53 +79,31 @@ def parseKeypad(data):
 	data = []
 	return token
 
-#light selected lef for 1s
-def light_led(led):
-	GPIO.output(led, GPIO.HIGH)
-	sleep(1)
-	GPIO.output(led, GPIO.LOW)
-
-
 def run():
 	global data
 	global read
 	read = True
-
 	while read:
 		data = []
-		#remove any existing edge_detect,
-		#this allows the program to repeat
 		GPIO.remove_event_detect(clock_pin)
-		#block until level change detected
 		GPIO.wait_for_edge(clock_pin, GPIO.RISING)
 		GPIO.add_event_detect(clock_pin, GPIO.RISING, callback=data_callback)
-		#wait for pulses to finish
-		sleep(0.5)	
+		sleep(0.75)	
 		token = parseKeypad(data)
+#		print token
 		user = 	getUser(token)
-		topic = "/doors/accessevents"
-		msg = ""
-		#if getUser returns nothing, token not recognised
+#		print(user)
 		if len(user) == 0:
-			msg = ("token id: {0} not recognised @ door no. {1}").format(str(token), str(DOOR_NUM))
-			publish_event(topic,msg)
-			print(msg)
-			light_led(rled_pin)
-		#else get username and light green led
+			print("user not recognised")
 		else:
 			name = user[0]
 			time = datetime.now().time()
-			msg = ("{0} Accessed door no. {1}  @ {2})".format(name,str(DOOR_NUM), time))
-			publish_event(topic,msg)
-			print(msg)
-			light_led(gled_pin)
-
+			print ("{0} Accessed door @ {1}".format(name,time))
 	
 def quit():
 	print("GPIO Cleanup")
 	read = False
-#	GPIO.cleanup()	
-	return
+	GPIO.cleanup()	
 
 	
 
