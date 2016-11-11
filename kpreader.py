@@ -124,7 +124,7 @@ def run():
 		else:
 			name = user[0]
 			time = datetime.now().time()
-			msg = ("{0} Accessed door no. {1}  @ {2})".format(name,str(DOOR_NUM), time))
+			msg = "{0} Accessed door no. {1}  @ {2}".format(name,str(DOOR_NUM), time)
 			publish_event(topic,msg)
 			print(msg)
 			light_led(gled_pin)

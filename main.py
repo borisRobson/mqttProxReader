@@ -43,8 +43,8 @@ if __name__=="__main__":
 	mqttThread.daemon = True
 	readerThread.daemon = True
 
-	mqttThread.start()
 	readerThread.start()
+	mqttThread.start()
 
 	try:
 		while True:

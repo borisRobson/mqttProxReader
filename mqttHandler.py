@@ -56,16 +56,18 @@ def init():
 	mqttc.on_message = on_message
 	
 	#read config file
-	config = read_mqtt_config()
+	config = read_mqtt_config('config.ini', 'cloudmqtt')
 	username = config.get('username')
 	passwd = config.get('password')
 	host = config.get('host')
 	strport = config.get('port')
 	port = int(strport)
+	print "{0} : {1}".format(host, port)
 
-#	mqttc.username_pw_set("ziuhykxg","TjjJbgP0Ojuy")
+	mqttc.username_pw_set(str(username), str(passwd))
 #	mqttc.connect("m21.cloudmqtt.com",14408)
-	mqttc.connect("10.10.40.118",1883)
+#	mqttc.connect("10.10.40.118",1883)
+	mqttc.connect(str(host), port)
 
 def run():	
 	mqttc.loop_forever()
