@@ -1,5 +1,4 @@
 RPi.GPIO
 paho-mqtt
 MySQL-python
-ConfigParser
-mysql-connector-python
+configparser

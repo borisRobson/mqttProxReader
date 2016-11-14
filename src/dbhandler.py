@@ -13,7 +13,7 @@ def insert(user, token):
 	args = (user, str(token))
 #	print args
 	try:
-		db_config = read_config()
+		db_config = read_config('config.ini','mysql')
 		conn = MySQLConnection(**db_config)
 
 		cursor = conn.cursor()
@@ -30,7 +30,7 @@ def insert(user, token):
 		conn.close()
 
 def remove(name):
-	db_config = read_config()
+	db_config = read_config('config.ini', 'mysql')
 	
 	query = "DELETE FROM Users Where Name = %s"
 
