@@ -54,7 +54,7 @@ def getUser(token):
 	user = {}
 
 	try:
-		dbconfig = read_config()
+		dbconfig = read_config('config.ini', 'mysql')
 
 		conn = MySQLConnection(**dbconfig)
 		query = ("SELECT * from Users Where TokenId = {0}".format(str(token)))

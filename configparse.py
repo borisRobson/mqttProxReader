@@ -1,6 +1,6 @@
 from configparser import ConfigParser
 
-def read_config(filename='config.ini', section='mysql'):
+def read_config(filename, section):
 	parser = ConfigParser()
 	parser.read(filename)
 	
