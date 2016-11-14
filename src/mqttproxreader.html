@@ -1,0 +1,28 @@
+<script type="text/javascipt">
+	RED.nodes.registerType('mqttproxreader',{
+		category: 'Raspberry Pi',
+		Label : "MqttProxReader",
+		paletteLabel: "MqttProxReader",
+		icon: "rpi.png",
+		color: '#a6bbcf',		
+		defaults:{
+			name: {value:""}
+		},
+		inputs:1,
+		outputs:1,
+		label: function(){
+			return this.name || "mqttproxreader";
+		}
+	});
+</script>
+
+<script type="text/x-red" data-template-name="mqttproxreader">
+	<div class="form-row">
+		<label for="node-input-name"><i class="icon-tag"></i>Name</label>
+		<input type="text" id="node-input-name" placeholder="Name">
+	</div>
+</script>
+
+<script type="text/red" data-help-name="mqttproxreader">
+	<p>A node to trigger mqttproxreader code</p>
+</script>

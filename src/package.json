@@ -2,7 +2,7 @@
   "name": "mqttproxreader",
   "version": "1.0.0",
   "description": "",
-  "main": "nodewrapper.js",
+  "main": "mqttproxreadert.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,6 +13,11 @@
   "dependencies":{
      "python-shell": "*"
   },
+  "node-red":{
+    "nodes:":{
+ 	"mqttproxreader":"mqttproxreader.js"
+     }
+   },
   "author": "",
   "license": "ISC",
   "bugs": {
