@@ -5,6 +5,7 @@ import json
 from datetime import datetime
 from dbhandler import getUser
 from mqttHandler import publish_event
+from configparse import read_config
 
 
 #read value on rising clock pulse
@@ -23,10 +24,17 @@ def init():
 	GPIO.setwarnings(False)
 
 	#configure pinout and board-mode
-	data_pin = 14
-	clock_pin = 2
-	rled_pin = 15
-	gled_pin = 3
+	config = read_config('config.ini', 'hardware')
+	data_pin = int(config.get('data_pin'))
+	clock_pin = int(config.get('clock_pin'))
+	rled_pin = int(config.get('rled_pin'))
+	gled_pin = int(config.get('gled_pin'))
+
+#	data_pin = int(dbdata_pin)
+#	clock_pin = int(dbclock_pin)
+#	rled_pin = int(dbrled_pin)
+#	gled_pin = int(dbgled_pin)
+#	print ("pins: {0}, {1}, {2}, {3}".format(data_pin,clock_pin, rled_pin, gled_pin))
 
 	GPIO.setmode(GPIO.BCM)
 	GPIO.setup(data_pin, GPIO.IN)
@@ -99,6 +107,7 @@ def run():
 	global data
 	global read
 	read = True
+	print("run pins: {0},{1},{2},{3}".format(data_pin ,clock_pin, rled_pin, gled_pin))
 
 	while read:
 		data = []
