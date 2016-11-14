@@ -9,7 +9,7 @@ sudo apt-get install mysql-client
 #install mysql-connector-python
 cd ~
 git clone https://github.com/mysql/mysql-connector-python.git
-cd mysql-connector-pyhton
+cd mysql-connector-python
 python ./setup.py build
 sudo python ./setup.py install
 
