@@ -17,4 +17,5 @@ sudo python ./setup.py install
 cd ~/mqttProxReader/install_scripts
 sudo pip install -r requirements.txt
 
-sudo npm install -g python-shell
+cd ../src
+sudo npm install python-shell
