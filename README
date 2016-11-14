@@ -1,0 +1,23 @@
+###MQTT KP-ProxReader###
+#INSTALL REQUIREMENTS
+./install_scripts/install.sh
+#updates libpython-dev and installs mysql-server
+First time config:
+	-when prompted set password. Doesn't have to match root pw 
+#install mysql-client for command line testing
+#install.sh then installs required pip & node packages
+
+#start mysql server with 'mysql -u root -p'
+#enter password
+#Now we create the database and add Users table
+#note: default database name is 'MqttEntryDb', you don't have to use this
+'CREATE DATABASE MqttEntryDemo;'
+'USE MqttEntryDemo;'
+'CREATE TABLE Users (Name VARCHAR(50) NOT NULL, TokenId VARCHAR(50) NOT NULL);'
+#confirm format with
+'DESCRIBE Users'
+#database is now created
+#in ~/mqttProxReader/src/config.ini
+#edit cloudmqqt, rpi-host and myswl sections to your settings
+#for console output run 'python main.py'
+#'node nodewrapper.js ' will only log output errors
