@@ -1,5 +1,5 @@
 import paho.mqtt.client as mqtt
-from configparse import read_mqtt_config
+from configparse import read_config
 import json
 from datetime import datetime
 import uuid
@@ -46,7 +46,6 @@ def init():
 	MQTT_TOPICS = [('/users/userAdded',1),('/users/userRemoved',1),('/users/userUpdated',1)]
 	#create new instance of client
 	uid = uuid.uuid1()
-	#print uid
 	mqttc = mqtt.Client(client_id=str(uid), clean_session=False)
 
 	#assign callbacks
@@ -56,17 +55,14 @@ def init():
 	mqttc.on_message = on_message
 	
 	#read config file
-	config = read_mqtt_config('config.ini', 'cloudmqtt')
+	config = read_config('config.ini', 'cloudmqtt')
 	username = config.get('username')
 	passwd = config.get('password')
 	host = config.get('host')
 	strport = config.get('port')
 	port = int(strport)
-	print "{0} : {1}".format(host, port)
 
 	mqttc.username_pw_set(str(username), str(passwd))
-#	mqttc.connect("m21.cloudmqtt.com",14408)
-#	mqttc.connect("10.10.40.118",1883)
 	mqttc.connect(str(host), port)
 
 def run():	

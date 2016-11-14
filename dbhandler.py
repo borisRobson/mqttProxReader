@@ -1,5 +1,5 @@
 from mysql.connector import MySQLConnection, Error
-from configparse import read_db_config
+from configparse import read_config
 from datetime import datetime
 
 def init():
@@ -13,7 +13,7 @@ def insert(user, token):
 	args = (user, str(token))
 #	print args
 	try:
-		db_config = read_db_config()
+		db_config = read_config()
 		conn = MySQLConnection(**db_config)
 
 		cursor = conn.cursor()
@@ -30,7 +30,7 @@ def insert(user, token):
 		conn.close()
 
 def remove(name):
-	db_config = read_db_config()
+	db_config = read_config()
 	
 	query = "DELETE FROM Users Where Name = %s"
 
@@ -54,7 +54,7 @@ def getUser(token):
 	user = {}
 
 	try:
-		dbconfig = read_db_config()
+		dbconfig = read_config()
 
 		conn = MySQLConnection(**dbconfig)
 		query = ("SELECT * from Users Where TokenId = {0}".format(str(token)))
