@@ -18,4 +18,4 @@ cd ~/mqttProxReader/install_scripts
 sudo pip install -r requirements.txt
 
 cd ../src
-sudo npm install python-shell
+sudo npm install .
