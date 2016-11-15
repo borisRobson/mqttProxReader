@@ -2,9 +2,9 @@
 sudo apt-get install libpython-dev
 
 #install mysql, see README for config instructions
-sudo apt-get install libmysqlclient-dev
-sudo apt-get install mysql-server --fix-missing
-sudo apt-get install mysql-client
+sudo apt-get install -y libmysqlclient-dev
+sudo apt-get install -y mysql-server --fix-missing
+sudo apt-get install -y mysql-client
 
 #install mysql-connector-python
 cd ~
